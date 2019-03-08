@@ -161,6 +161,9 @@ export class LiveExecutionTracker {
       ],
     });
 
+    this._diagramViewer.on('element.click', this._elementClickHandler);
+    this._viewerCanvas.zoom('fit-viewport');
+
     this._modeling = this._diagramModeler.get('modeling');
     this._elementRegistry = this._diagramModeler.get('elementRegistry');
     this._viewerCanvas = this._diagramViewer.get('canvas');
@@ -198,10 +201,6 @@ export class LiveExecutionTracker {
     }
 
     await this._addOverlays();
-
-    this._diagramViewer.on('element.click', this._elementClickHandler);
-
-    this._viewerCanvas.zoom('fit-viewport');
 
     this.tokenViewerResizeDiv.addEventListener('mousedown', (mouseDownEvent: Event) => {
       const windowEvent: Event = mouseDownEvent || window.event;
