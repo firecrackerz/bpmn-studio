@@ -196,12 +196,12 @@ export class LiveExecutionTracker {
     const colorizedXml: string = await this._getColorizedXml();
 
     const colorizingWasSuccessfull: boolean = colorizedXml !== undefined;
-    if(colorizingWasSuccessfull) {
+    if (colorizingWasSuccessfull) {
       await this._importXmlIntoDiagramViewer(colorizedXml);
     } else {
-      const xml: string = await this._exportXmlFromDiagramModeler();
+      const xmlFromModeler: string = await this._exportXmlFromDiagramModeler();
 
-      await this._importXmlIntoDiagramViewer(xml);
+      await this._importXmlIntoDiagramViewer(xmlFromModeler);
     }
 
     await this._addOverlays();
