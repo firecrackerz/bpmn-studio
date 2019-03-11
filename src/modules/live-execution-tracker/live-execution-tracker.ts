@@ -307,7 +307,7 @@ export class LiveExecutionTracker {
     }
 
     const parentProcessModel: DataModels.Correlations.CorrelationProcessModel =
-      await this._getProcessModelByProcessInstanceId(this._parentProcessInstanceId);
+     await this._liveExecutionTrackerService.getProcessModelByProcessInstanceId(this.correlationId, this._parentProcessInstanceId);
 
     const parentProcessModelNotFound: boolean = parentProcessModel === undefined;
     if (parentProcessModelNotFound) {
@@ -862,26 +862,6 @@ export class LiveExecutionTracker {
     const {parentProcessInstanceId} = processModelFromCorrelation;
 
     return parentProcessInstanceId;
-  }
-
-  private async _getProcessModelByProcessInstanceId(processInstanceId: string): Promise<DataModels.Correlations.CorrelationProcessModel> {
-    const correlation: DataModels.Correlations.Correlation = await  this._liveExecutionTrackerService.getCorrelationById(this.correlationId);
-
-    const errorGettingCorrelation: boolean = correlation === undefined;
-    if (errorGettingCorrelation) {
-      this._notificationService.showNotification(NotificationType.ERROR, 'Could not get correlation. Please try to start the process again.');
-
-      return undefined;
-    }
-
-    const processModel: DataModels.Correlations.CorrelationProcessModel =
-      correlation.processModels.find((correlationProcessModel: DataModels.Correlations.CorrelationProcessModel): boolean => {
-        const processModelFound: boolean = correlationProcessModel.processInstanceId === processInstanceId;
-
-        return processModelFound;
-      });
-
-    return processModel;
   }
 
   private _resizeTokenViewer(mouseEvent: MouseEvent): void {
