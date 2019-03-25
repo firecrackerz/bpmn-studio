@@ -4,18 +4,15 @@ import {inject} from 'aurelia-framework';
 import {IIdentity} from '@essential-projects/iam_contracts';
 import {DataModels, IManagementApi} from '@process-engine/management_api_contracts';
 
-import {IAuthenticationService} from '../../../../contracts';
 import {IInspectCorrelationRepository} from '../contracts';
 
-@inject('ManagementApiClientService', 'AuthenticationService')
+@inject('ManagementApiClientService')
 export class InspectCorrelationRepository implements IInspectCorrelationRepository {
 
   private _managementApiService: IManagementApi;
-  private _authenticationService: IAuthenticationService;
 
-  constructor(managementApi: IManagementApi, authenticationService: IAuthenticationService) {
+  constructor(managementApi: IManagementApi) {
     this._managementApiService = managementApi;
-    this._authenticationService = authenticationService;
   }
 
   public async getAllCorrelationsForProcessModelId(processModelId: string, identity: IIdentity): Promise<Array<DataModels.Correlations.Correlation>> {
@@ -58,14 +55,13 @@ export class InspectCorrelationRepository implements IInspectCorrelationReposito
     return logsForCorrelation;
   }
 
-  public async getTokenForFlowNodeInstance(
-    processModelId: string,
-    correlationId: string,
+  public async getTokenForFlowNodeByProcessInstanceId(
+    processInstanceId: string,
     flowNodeId: string,
     identity: IIdentity,
   ): Promise<Array<DataModels.TokenHistory.TokenHistoryEntry>> {
 
-    return this._managementApiService.getTokensForFlowNodeInstance(identity, correlationId, processModelId, flowNodeId);
+    return this._managementApiService.getTokensForFlowNodeByProcessInstanceId(identity, processInstanceId, flowNodeId);
   }
 
 }
